@@ -1,6 +1,6 @@
 import logging
 
-from telegram import Update, ForceReply, ReplyKeyboardMarkup
+from telegram import Update, ForceReply, ReplyKeyboardMarkup, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 # Enable logging
@@ -48,26 +48,24 @@ def asaxiy_saerch(update: Update, context: CallbackContext) -> None:
 		img = item.find("img", class_="img-fluid lazyload").get("data-src")
 		if img[-5:]=='.webp':
 			img = img[:-5]
-		print(img)
 
 		title = str(item.find("h5", class_="product__item__info-title").text)
-		print(title)
 		text += title + "\n\n" 
 		
-		old_price = str(item.find("div", class_="product__item-old--price").find("span").text)
-		
-		price = str(item.find("div", class_="produrct__item-prices--wrapper").find("span").text)
-		print(price)
+		old_price = item.find("div", class_="product__item-old--price")
+		if old_price:
+			old_price_text = old_price.text
+			text += f"<i>{old_price_text}</i> \n\n"
+
+		price = str(item.find("div", class_="produrct__item-prices--wrapper").text)
 		text += price + "\n\n" 
 
-		# content = str()
-
 		link = "https://asaxiy.uz" + str(item.find("a", class_="title__link").get("href"))
-		print(link)
 		text += link
-
-		update.message.reply_photo(img, text)
-
+		if img or text:
+			update.message.reply_photo(img, text, parse_mode=ParseMode.HTML)
+		else:
+			update.message.reply_text('qayatdan urining')
 
 def main() -> None:
 	"""Start the bot."""

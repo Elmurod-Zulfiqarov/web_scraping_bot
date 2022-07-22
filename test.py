@@ -9,29 +9,28 @@ soup = BeautifulSoup(page.content, "html.parser")
 
 products = list(soup.find("div", class_="custom-gutter").find_all("div", recursive=False))[:10]
 for item in products:
-    text = ""
+    # text = ""
 
-    img = item.find("img", class_="img-fluid lazyload").get("data-src")
-    if img[-5:]=='.webp':
-        img = img[:-5]
-    print(img)
+    # img = item.find("img", class_="img-fluid lazyload").get("data-src")
+    # if img[-5:]=='.webp':
+    #     img = img[:-5]
+    # print(img)
 
     title = str(item.find("h5", class_="product__item__info-title").text)
     print(title)
-    text += title + "\n\n" 
+    # text += title + "\n\n" 
 
     old_price = item.find("div", class_="product__item-old--price")
     if old_price:
         old_price_text = old_price.text
         text += f"<strike>{old_price_text}</strike> \n\n"
         print(old_price_text)
-    price = str(item.find("div", class_="produrct__item-prices--wrapper").find("span").text)
+
+    price = str(item.find("div", class_="produrct__item-prices--wrapper").text)
     print(price)
-    text += price + "\n\n" 
+    # text += price + "\n\n" 
 
-    content = str()
-
-    link = "https://asaxiy.uz" + str(item.find("a", class_="title__link").get("href"))
-    print(link)
-    text += link
+    # link = "https://asaxiy.uz" + str(item.find("a", class_="title__link").get("href"))
+    # print(link)
+    # text += link
 
